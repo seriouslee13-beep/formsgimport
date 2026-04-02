@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
-import simplur from 'simplur'
 
 import {
   FormAuthType,
@@ -16,7 +15,6 @@ import { PAYMENT_DELETE_DEFAULT } from 'formsg-shared/utils/payments'
 
 import { ApiError } from '~typings/core'
 
-import { GUIDE_PREVENT_EMAIL_BOUNCE } from '~constants/links'
 import { useToast } from '~hooks/useToast'
 import { convertUnicodeLocaleToLanguage } from '~utils/multiLanguage'
 import { formatOrdinal } from '~utils/stringFormat'
@@ -56,7 +54,9 @@ import {
 export const useMutateFormSettings = () => {
   const { t } = useTranslation()
   const { formId } = useParams()
-  if (!formId) throw new Error('No formId provided')
+  if (!formId) {
+    throw new Error(t('features.adminForm.settings.mutations.missingFormId'))
+  }
 
   const queryClient = useQueryClient()
   const toast = useToast({ status: 'success', isClosable: true })
@@ -130,9 +130,13 @@ export const useMutateFormSettings = () => {
         const isNowPublic = newData.status === FormStatus.Public
         const toastStatusPublicMessage =
           newData.responseMode === FormResponseMode.Encrypt
-            ? `Your form is now open.\n\nStore your secret key in a safe place. If you lose your secret key, all your responses will be lost permanently.`
-            : 'Your form is now open.'
-        const toastStatusClosedMessage = 'Your form is closed to new responses.'
+            ? t(
+                'features.adminForm.settings.mutations.formStatus.openStorageMode',
+              )
+            : t('features.adminForm.settings.mutations.formStatus.open')
+        const toastStatusClosedMessage = t(
+          'features.adminForm.settings.mutations.formStatus.closed',
+        )
         const toastStatusMessage = isNowPublic
           ? toastStatusPublicMessage
           : toastStatusClosedMessage
@@ -149,11 +153,13 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         // Show toast on success.
         const toastStatusMessage = newData.submissionLimit
-          ? simplur`Your form will now automatically close on the ${[
-              newData.submissionLimit,
-              formatOrdinal,
-            ]} submission.`
-          : 'The submission limit on your form is removed.'
+          ? t(
+              'features.adminForm.settings.mutations.submissionLimit.withOrdinal',
+              {
+                ordinal: formatOrdinal(newData.submissionLimit),
+              },
+            )
+          : t('features.adminForm.settings.mutations.submissionLimit.removed')
         handleSuccess({ newData, toastDescription: toastStatusMessage })
       },
       onError: handleError,
@@ -168,8 +174,8 @@ export const useMutateFormSettings = () => {
         handleSuccess({
           newData,
           toastDescription: newData.hasMultiLang
-            ? 'Multi-language enabled. Respondents can now select other languages to view your form in.'
-            : 'Multi-language disabled.',
+            ? t('features.adminForm.settings.mutations.multiLang.enabled')
+            : t('features.adminForm.settings.mutations.multiLang.disabled'),
         })
       },
       onError: handleError,
@@ -194,8 +200,14 @@ export const useMutateFormSettings = () => {
           const isSelectedLanguageSupported = supportedLanguages.includes(
             newSupportedLanguages.selectedLanguage,
           )
-            ? `Respondents will now be able to select and view your form in ${languageToDisplay}.`
-            : `${languageToDisplay} is now hidden. Respondents will not be able to see it.`
+            ? t(
+                'features.adminForm.settings.mutations.supportedLanguages.selectable',
+                { language: languageToDisplay },
+              )
+            : t(
+                'features.adminForm.settings.mutations.supportedLanguages.hidden',
+                { language: languageToDisplay },
+              )
 
           handleSuccess({
             newData,
@@ -214,9 +226,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: `Saving of draft responses is now ${
-            newData.isSaveDraftEnabled ? 'enabled' : 'disabled'
-          } on your form.`,
+          toastDescription: newData.isSaveDraftEnabled
+            ? t('features.adminForm.settings.mutations.saveDraft.enabled')
+            : t('features.adminForm.settings.mutations.saveDraft.disabled'),
         })
       },
       onError: handleError,
@@ -229,9 +241,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: `reCAPTCHA is now ${
-            newData.hasCaptcha ? 'enabled' : 'disabled'
-          } on your form.`,
+          toastDescription: newData.hasCaptcha
+            ? t('features.adminForm.settings.mutations.captcha.enabled')
+            : t('features.adminForm.settings.mutations.captcha.disabled'),
         })
       },
       onError: handleError,
@@ -245,9 +257,13 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: `Email notifications for issues reported are now ${
-            newData.hasIssueNotification ? 'enabled' : 'disabled'
-          } on your form.`,
+          toastDescription: newData.hasIssueNotification
+            ? t(
+                'features.adminForm.settings.mutations.issueNotification.enabled',
+              )
+            : t(
+                'features.adminForm.settings.mutations.issueNotification.disabled',
+              ),
         })
       },
       onError: handleError,
@@ -264,7 +280,9 @@ export const useMutateFormSettings = () => {
 
         // Show toast on success.
         toast({
-          description: "Your form's title has been updated.",
+          description: t(
+            'features.adminForm.settings.mutations.formTitleUpdated',
+          ),
         })
       },
       onError: (error: Error) => {
@@ -283,7 +301,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: "Your form's inactive message has been updated.",
+          toastDescription: t(
+            'features.adminForm.settings.mutations.inactiveMessageUpdated',
+          ),
         })
       },
       onError: handleError,
@@ -296,7 +316,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: 'Emails successfully updated.',
+          toastDescription: t(
+            'features.adminForm.settings.mutations.emailsUpdated',
+          ),
         })
       },
       onError: handleError,
@@ -310,7 +332,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: 'Emails successfully updated.',
+          toastDescription: t(
+            'features.adminForm.settings.mutations.emailsUpdated',
+          ),
         })
       },
       onError: handleError,
@@ -356,25 +380,14 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: 'E-service ID successfully updated.',
+          toastDescription: t(
+            'features.adminForm.settings.mutations.esrvcIdUpdated',
+          ),
         })
       },
       onError: handleError,
     },
   )
-
-  const generateFormAuthTypeMutationToastMessageText = (
-    prevAuthType: FormAuthType | undefined,
-    nextAuthType: FormAuthType,
-  ) => {
-    if (prevAuthType === FormAuthType.NIL) {
-      return 'Singpass authentication successfully enabled.'
-    }
-    if (nextAuthType === FormAuthType.NIL) {
-      return 'Singpass authentication successfully disabled.'
-    }
-    return 'Singpass authentication successfully updated.'
-  }
 
   const mutateFormAuthType = useMutation<
     FormSettings,
@@ -412,12 +425,15 @@ export const useMutateFormSettings = () => {
       },
       onSuccess: (newData, newAuthType, context) => {
         const prevAuthType = context?.previousSettings?.authType
+        const toastDescription =
+          prevAuthType === FormAuthType.NIL
+            ? t('features.adminForm.settings.mutations.authType.enabled')
+            : newAuthType === FormAuthType.NIL
+              ? t('features.adminForm.settings.mutations.authType.disabled')
+              : t('features.adminForm.settings.mutations.authType.updated')
         handleSuccess({
           newData,
-          toastDescription: generateFormAuthTypeMutationToastMessageText(
-            prevAuthType,
-            newAuthType,
-          ),
+          toastDescription,
         })
       },
       onError: (error, _newData, context) => {
@@ -449,8 +465,8 @@ export const useMutateFormSettings = () => {
         handleSuccess({
           newData,
           toastDescription: newData.isSubmitterIdCollectionEnabled
-            ? 'NRIC/FIN/UEN collection is now enabled on your form.'
-            : 'NRIC/FIN/UEN collection is now disabled on your form.',
+            ? t('features.adminForm.settings.mutations.submitterId.enabled')
+            : t('features.adminForm.settings.mutations.submitterId.disabled'),
         })
       },
       onError: handleError,
@@ -469,8 +485,12 @@ export const useMutateFormSettings = () => {
         handleSuccess({
           newData,
           toastDescription: newData.isSingleSubmission
-            ? 'Single submission per NRIC/FIN/UEN is now enabled on your form.'
-            : 'Single submission per NRIC/FIN/UEN is now disabled on your form.',
+            ? t(
+                'features.adminForm.settings.mutations.singleSubmission.enabled',
+              )
+            : t(
+                'features.adminForm.settings.mutations.singleSubmission.disabled',
+              ),
         })
       },
       onError: handleError,
@@ -485,8 +505,8 @@ export const useMutateFormSettings = () => {
       onSuccess: (_newData, variable) => {
         generateSuccessToast(
           variable
-            ? 'Your CSV has been uploaded successfully.'
-            : 'Your CSV has been removed successfully.',
+            ? t('features.adminForm.settings.mutations.whitelist.uploaded')
+            : t('features.adminForm.settings.mutations.whitelist.removed'),
         )
       },
       onError: (error: Error) => {
@@ -501,9 +521,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData, nextUrl) => {
         handleSuccess({
           newData,
-          toastDescription: `Webhook URL successfully ${
-            nextUrl ? 'updated' : 'removed'
-          }.`,
+          toastDescription: nextUrl
+            ? t('features.adminForm.settings.mutations.webhookUrl.updated')
+            : t('features.adminForm.settings.mutations.webhookUrl.removed'),
         })
       },
       onError: handleError,
@@ -516,9 +536,11 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData, nextEnabled) => {
         handleSuccess({
           newData,
-          toastDescription: `Webhook retries have been ${
-            nextEnabled ? 'en' : 'dis'
-          }abled.`,
+          toastDescription: nextEnabled
+            ? t('features.adminForm.settings.mutations.webhookRetries.enabled')
+            : t(
+                'features.adminForm.settings.mutations.webhookRetries.disabled',
+              ),
         })
       },
       onError: handleError,
@@ -532,7 +554,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: `Business information has been updated.`,
+          toastDescription: t(
+            'features.adminForm.settings.mutations.businessInfoUpdated',
+          ),
         })
       },
       onError: handleError,
@@ -546,7 +570,9 @@ export const useMutateFormSettings = () => {
       onSuccess: (newData) => {
         handleSuccess({
           newData,
-          toastDescription: `GST setting has been updated.`,
+          toastDescription: t(
+            'features.adminForm.settings.mutations.gstUpdated',
+          ),
         })
       },
       onError: handleError,
@@ -580,8 +606,11 @@ export const useMutateFormSettings = () => {
 }
 
 export const useMutateStripeAccount = () => {
+  const { t } = useTranslation()
   const { formId } = useParams()
-  if (!formId) throw new Error('No formId provided')
+  if (!formId) {
+    throw new Error(t('features.adminForm.settings.mutations.missingFormId'))
+  }
   const queryClient = useQueryClient()
 
   const linkStripeAccountMutation = useMutation(
