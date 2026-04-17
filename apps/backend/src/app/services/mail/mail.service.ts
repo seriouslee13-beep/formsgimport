@@ -1014,6 +1014,7 @@ export class MailService {
     formId,
     paymentId,
     paymentAmount,
+    useStandardisedEmailTemplate,
   }: {
     email: string
     formTitle: string
@@ -1021,7 +1022,31 @@ export class MailService {
     formId: string
     paymentId: string
     paymentAmount: number
-  }): ResultAsync<true, MailSendError> => {
+    useStandardisedEmailTemplate?: boolean
+  }): ResultAsync<true, MailSendError | MailGenerationError> => {
+    //TODO (email-standardisation): remove when email standardisation is GA
+    if (useStandardisedEmailTemplate) {
+      const emailData: EmailData = {
+        emailTitle: `Your payment on ${formTitle} has been received`,
+        formTitle,
+        responseId: submissionId,
+        paymentAmount: centsToDollars(paymentAmount),
+        paymentUrl: `${this.#appUrl}/api/v3/${getPaymentInvoiceDownloadUrlPath(
+          formId,
+          paymentId,
+        )}`,
+      }
+
+      return this.#sendEmailWithTemplate({
+        emails: email,
+        formId,
+        subject: `Your payment on ${this.#appName} was successful`,
+        htmlData: emailData,
+        emailType: EmailType.PaymentConfirmation,
+        actionName: 'sendPaymentConfirmationEmail',
+      })
+    }
+
     const htmlData: PaymentConfirmationData = {
       formTitle: formTitle,
       submissionId: submissionId,

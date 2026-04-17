@@ -47,7 +47,7 @@ export type EmailData = {
   responseId: string
   outcome?: WorkflowOutcome | undefined
   formQuestionAnswers?: QuestionAnswer[]
-  paymentAmount?: number
+  paymentAmount?: string
   statusTrackerUrl?: string
   reviewUrl?: string
   paymentUrl?: string
@@ -204,7 +204,7 @@ export const EmailTemplate = ({
                     Amount paid
                   </Text>
                   <Text style={{ ...secondaryTextStyle, ...answerMargin }}>
-                    {`$${paymentAmount.toFixed(2)}`}
+                    {paymentAmount}
                   </Text>
                 </Section>
               </>
