@@ -426,7 +426,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
 
         const emailFieldWithoutFormSummaryStep1 = {
@@ -524,7 +524,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
 
         const emailFieldWithFormSummaryStep1 = {
@@ -625,7 +625,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
 
         const emailFieldWithoutAutoReplyStep1 = {
@@ -718,7 +718,7 @@ describe('multirespondent-submission.service', () => {
         )
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
         const emailFieldWithFormSummaryStep1 = {
           _id: new ObjectId().toHexString(),
@@ -795,7 +795,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
         const sendMrfWorkflowCompletionEmailSpy = jest.spyOn(
           MailService,
@@ -877,7 +877,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
 
         const emailFieldWithFormSummaryStep1 = {
@@ -982,7 +982,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
 
         const emailFieldWithFormSummaryStep1 = {
@@ -1120,7 +1120,7 @@ describe('multirespondent-submission.service', () => {
         // Arrange
         const sendMrfRespondentCopyEmailSpy = jest.spyOn(
           MailService,
-          'sendMrfRespondentCopyEmail',
+          'sendRespondentCopyEmail',
         )
 
         const emailFieldWithFormSummaryStep1 = {
