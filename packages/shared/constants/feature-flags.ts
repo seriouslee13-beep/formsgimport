@@ -34,6 +34,7 @@ export const featureFlags = {
   forumsg: 'forumsg' as const,
   wogadLogin: 'wogad-login' as const,
   mrfResponseLimit: 'mrf-response-limit' as const,
+  standardisedEmailTemplate: 'standardised-email-template' as const,
 }
 
 export enum AdminEmailPdfFeatureValue {
