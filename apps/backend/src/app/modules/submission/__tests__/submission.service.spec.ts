@@ -465,6 +465,7 @@ describe('submission.service', () => {
         pdfAttachment: undefined,
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [
@@ -480,6 +481,7 @@ describe('submission.service', () => {
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
         autoReplyMailDatas: expectedAutoReplyData,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrap()).toBe(true)
     })
@@ -510,6 +512,7 @@ describe('submission.service', () => {
         pdfAttachment: undefined,
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
+        useStandardisedEmailTemplate: false,
       })
 
       expect(MockMailService.sendAutoReplyEmails).not.toHaveBeenCalled()
@@ -557,6 +560,7 @@ describe('submission.service', () => {
         pdfAttachment: undefined,
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
+        useStandardisedEmailTemplate: false,
       })
 
       expect(MockMailService.sendAutoReplyEmails).not.toHaveBeenCalled()
@@ -610,6 +614,7 @@ describe('submission.service', () => {
         pdfAttachment: undefined,
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [EXPECTED_AUTOREPLY_DATA_1]
@@ -622,6 +627,7 @@ describe('submission.service', () => {
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
         autoReplyMailDatas: expectedAutoReplyData,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrap()).toBe(true)
     })
@@ -677,6 +683,7 @@ describe('submission.service', () => {
         pdfAttachment: undefined,
         isPaymentEnabled: false,
         responsesData: [],
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [
@@ -692,6 +699,7 @@ describe('submission.service', () => {
         autoReplyMailDatas: expectedAutoReplyData,
         pdfAttachment: undefined,
         isPaymentEnabled: false,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrap()).toBe(true)
     })
@@ -752,6 +760,7 @@ describe('submission.service', () => {
         responsesData: MOCK_AUTOREPLY_DATA,
         isPaymentEnabled: false,
         pdfAttachment: MOCK_PDF_ATTACHMENT,
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [
@@ -767,6 +776,7 @@ describe('submission.service', () => {
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
         autoReplyMailDatas: expectedAutoReplyData,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrap()).toBe(true)
     })
@@ -822,6 +832,7 @@ describe('submission.service', () => {
         responsesData: MOCK_AUTOREPLY_DATA,
         isPaymentEnabled: false,
         pdfAttachment: undefined,
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [
@@ -837,6 +848,7 @@ describe('submission.service', () => {
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
         autoReplyMailDatas: expectedAutoReplyData,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrap()).toBe(true)
     })
@@ -885,6 +897,7 @@ describe('submission.service', () => {
         responsesData: MOCK_AUTOREPLY_DATA,
         isPaymentEnabled: false,
         pdfAttachment: undefined,
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [
@@ -900,6 +913,7 @@ describe('submission.service', () => {
         isPaymentEnabled: false,
         responsesData: MOCK_AUTOREPLY_DATA,
         autoReplyMailDatas: expectedAutoReplyData,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrapErr()).toEqual(
         new SendEmailConfirmationError(),
@@ -958,6 +972,7 @@ describe('submission.service', () => {
         responsesData: MOCK_AUTOREPLY_DATA,
         isPaymentEnabled: false,
         pdfAttachment: undefined,
+        useStandardisedEmailTemplate: false,
       })
 
       const expectedAutoReplyData = [
@@ -973,6 +988,7 @@ describe('submission.service', () => {
         autoReplyMailDatas: expectedAutoReplyData,
         pdfAttachment: undefined,
         isPaymentEnabled: false,
+        useStandardisedEmailTemplate: false,
       })
       expect(result._unsafeUnwrapErr()).toEqual(
         new SendEmailConfirmationError(),
