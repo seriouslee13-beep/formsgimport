@@ -45,6 +45,7 @@ export type EmailData = {
   emailBody?: string
   formTitle: string
   responseId: string
+  timestamp?: string
   outcome?: WorkflowOutcome | undefined
   formQuestionAnswers?: QuestionAnswer[]
   paymentAmount?: string
@@ -69,6 +70,7 @@ export const EmailTemplate = ({
   emailBody,
   formTitle,
   responseId,
+  timestamp,
   outcome,
   formQuestionAnswers,
   paymentAmount,
@@ -171,6 +173,16 @@ export const EmailTemplate = ({
               <Text style={{ ...secondaryTextStyle, ...answerMargin }}>
                 {responseId}
               </Text>
+              {timestamp && (
+                <>
+                  <Text style={{ ...primaryTextStyle, ...questionMargin }}>
+                    Timestamp
+                  </Text>
+                  <Text style={{ ...secondaryTextStyle, ...answerMargin }}>
+                    {timestamp}
+                  </Text>
+                </>
+              )}
             </Section>
             {renderMargin(16)}
             {/* Section - Outcome */}

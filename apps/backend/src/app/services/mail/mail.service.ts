@@ -844,6 +844,7 @@ export class MailService {
         emailTitle: `${formTitle} has been completed by all respondents`,
         formTitle,
         responseId: refNo,
+        timestamp: submissionTime,
         formQuestionAnswers,
         responseJson: JSON.stringify(fullDataCollationData),
       }
@@ -926,13 +927,13 @@ export class MailService {
     >[]
   > => {
     // Data to render both the submission details mail HTML body and PDF.
-
+    const submissionTime = moment(submission.created)
+      .tz('Asia/Singapore')
+      .format('ddd, DD MMM YYYY hh:mm:ss A')
     const strippedRenderData: AutoreplySummaryRenderData = {
       refNo: submission.id,
       formTitle: form.title,
-      submissionTime: moment(submission.created)
-        .tz('Asia/Singapore')
-        .format('ddd, DD MMM YYYY hh:mm:ss A'),
+      submissionTime,
       // strip answer from renderData to always use answerTemplate for email body responses
       formData: responsesData.map(({ question, answerTemplate }) => ({
         question,
@@ -978,6 +979,7 @@ export class MailService {
             formId: form._id,
             formTitle: form.title,
             responseId: submission.id,
+            timestamp: submissionTime,
             attachments: getAttachmentsToInclude(mailData),
             autoReplyMailData: mailData,
             agencyName: form.admin.agency.fullName,
@@ -1231,6 +1233,7 @@ export class MailService {
     formId,
     formTitle,
     responseId,
+    timestamp,
     isRejected,
     formQuestionAnswers,
     attachments,
@@ -1239,6 +1242,7 @@ export class MailService {
     formId: string
     formTitle: string
     responseId: string
+    timestamp: string
     isRejected: boolean
     formQuestionAnswers: QuestionAnswer[]
     attachments?: Mail.Attachment[]
@@ -1250,6 +1254,7 @@ export class MailService {
       emailTitle: `${formTitle} has been ${outcome.toLowerCase()}`,
       formTitle,
       responseId: responseId.toString(),
+      timestamp,
       outcome,
       formQuestionAnswers,
     }
@@ -1269,6 +1274,7 @@ export class MailService {
     formId,
     formTitle,
     responseId,
+    timestamp,
     formQuestionAnswers,
     attachments,
     autoReplyMailData,
@@ -1278,6 +1284,7 @@ export class MailService {
     formId: string
     formTitle: string
     responseId: string
+    timestamp: string
     formQuestionAnswers?: QuestionAnswer[]
     attachments?: Mail.Attachment[]
     autoReplyMailData: AutoReplyMailData
@@ -1294,6 +1301,7 @@ export class MailService {
       emailBody: autoReplyMailData.body || defaultBody,
       formTitle,
       responseId,
+      timestamp,
       formQuestionAnswers,
       ...(hasStatusTracker && {
         statusTrackerUrl: `${this.#appUrl}/${formId}/status/${responseId}`,

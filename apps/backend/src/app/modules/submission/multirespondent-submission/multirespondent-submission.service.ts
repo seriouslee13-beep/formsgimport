@@ -420,6 +420,7 @@ const sendMrfOutcomeEmails = ({
   form,
   responses,
   submissionId,
+  timestamp,
   isApproval = false,
   isRejected = false,
   attachments,
@@ -439,6 +440,7 @@ const sendMrfOutcomeEmails = ({
   }
   responses: FieldResponsesV3
   submissionId: string
+  timestamp: string
   isApproval?: boolean
   isRejected?: boolean
   attachments?: IAttachmentInfo[]
@@ -511,6 +513,7 @@ const sendMrfOutcomeEmails = ({
             formId: form._id,
             formTitle: form.title,
             responseId: submissionId,
+            timestamp,
             isRejected,
             formQuestionAnswers,
             attachments: emailAttachments,
@@ -609,6 +612,9 @@ const sendMrfRespondentCopyEmails = ({
             formId: form._id,
             formTitle: form.title,
             responseId: submissionId,
+            timestamp:
+              submission.submittedSteps?.[submission.submittedSteps.length - 1]
+                ?.submittedAt ?? new Date().toISOString(),
             attachments: autoReplyMailData.includeFormSummary
               ? recipientAttachments
               : [],
@@ -1067,6 +1073,9 @@ export const performMultiRespondentPostSubmissionCreateActions = ({
         form,
         responses,
         submissionId,
+        timestamp:
+          submission.submittedSteps?.[currentStepNumber]?.submittedAt ??
+          new Date().toISOString(),
         attachments,
         pdfResult: sendMrfOutcomeEmailsPdfResult,
       })
@@ -1366,6 +1375,9 @@ export const performMultiRespondentPostSubmissionUpdateActions = ({
       form: snapshottedFormDef,
       responses,
       submissionId,
+      timestamp:
+        submission.submittedSteps?.[currentStepNumber]?.submittedAt ??
+        new Date().toISOString(),
       isApproval: true,
       isRejected: true,
       attachments: attachments,
@@ -1384,6 +1396,9 @@ export const performMultiRespondentPostSubmissionUpdateActions = ({
     form: snapshottedFormDef,
     responses,
     submissionId,
+    timestamp:
+      submission.submittedSteps?.[currentStepNumber]?.submittedAt ??
+      new Date().toISOString(),
     isApproval: checkIsFormApproval(snapshottedFormDef),
     attachments: attachments,
     pdfResult: sendMrfOutcomeEmailsPdfResult,
